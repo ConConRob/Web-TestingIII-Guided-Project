@@ -5,7 +5,9 @@ export default class Login extends React.Component {
   state = { flashMessage: '', username: '', password: '' }
 
   onChange = (field, value) => {
-    this.setState({ [field]: value });
+    if (/^[a-z0-9]+$/i.test(value)) {
+      this.setState({ [field]: value });
+    }
   }
 
   onLogin = () => {
@@ -26,22 +28,33 @@ export default class Login extends React.Component {
     return (
       <div>
         <div>
-          username <input
-            className='input'
+          <h1>Login Screen {this.props.lady}</h1>
+          <label htmlFor='usernameInput'>username</label>
+          <input
+            id='usernameInput'
+            value={this.state.username}
+            className='pretty-input'
             onChange={e => this.onChange('username', e.target.value)}
             placeholder='username'
             type="text"
-          /> <br />
-          password <input
-            className='input'
+          />
+          <br />
+          <label htmlFor='passwordInput'>password</label>
+          <input
+            id='passwordInput'
+            value={this.state.password}
+            className='pretty-input'
             onChange={e => this.onChange('password', e.target.value)}
             placeholder='password'
             type="text"
           />
         </div>
-        <button onClick={this.onLogin}>
-          Login
-        </button>
+        {
+          this.state.username && this.state.password &&
+          <button onClick={this.onLogin} data-testid='loginButton'>
+            Login Now!
+          </button>
+        }
         <div>{this.state.flashMessage}</div>
       </div>
     );
